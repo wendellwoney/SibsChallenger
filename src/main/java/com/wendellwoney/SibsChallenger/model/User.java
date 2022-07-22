@@ -1,9 +1,7 @@
 package com.wendellwoney.SibsChallenger.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.wendellwoney.SibsChallenger.configuration.mapper.StockMovementMapper;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +9,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -34,7 +31,6 @@ public class User extends BaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-
         if (!name.equals(user.name)) return false;
         return email.equals(user.email);
     }

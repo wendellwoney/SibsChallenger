@@ -8,11 +8,11 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=mydb
-  app:
-    container_name: app-springboot-postgresql
-    image: app-springboot-postgresql
-    build: ./
-    ports:
-      - "8080:8080"
-    depends_on:
-      - dbpostgresql
+#  app:
+#    container_name: app-springboot-postgresql
+#    image: app-springboot-postgresql
+#    build: ./
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - dbpostgresql

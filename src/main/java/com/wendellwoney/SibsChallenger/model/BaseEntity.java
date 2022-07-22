@@ -1,6 +1,7 @@
 package com.wendellwoney.SibsChallenger.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,9 +14,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Data
 @MappedSuperclass
-@Getter
-@Setter
 @Where(clause = "deleted = false")
 @SQLDelete(sql = "UPDATE #{#entityName} SET deleted = true WHERE id = ?")
 public abstract class BaseEntity implements Serializable {

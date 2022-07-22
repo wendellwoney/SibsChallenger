@@ -1,29 +1,25 @@
 package com.wendellwoney.SibsChallenger.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "order_tracers")
 public class OrderTracer extends BaseEntity{
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="order_id", nullable=false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stockmovement_id", nullable=false)
     private StockMovement stockMovement;
 
-    @Column(name="quantity_used",nullable = false, columnDefinition = "Decimal(10,2)")
+    @Column(name="quantity_used",nullable = false)
     private Double quantityUsed;
 
     @Override

@@ -1,26 +1,22 @@
 package com.wendellwoney.SibsChallenger.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "stock_movement")
 public class StockMovement extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="item_id", nullable=false)
     private Item item;
 
-    @Column(nullable = false, columnDefinition = "Decimal(10,2)")
+    @Column(nullable = false)
     private Double quantity;
 
     @OneToMany(mappedBy = "stockMovement")
