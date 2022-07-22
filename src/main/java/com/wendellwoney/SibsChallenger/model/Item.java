@@ -18,6 +18,10 @@ import javax.persistence.Table;
 @Table(name = "itens")
 public class Item extends BaseEntity {
 
+    public Item(Long id) {
+        this.setId(id);
+    }
+
     @Column(nullable = false)
     private String name;
 
