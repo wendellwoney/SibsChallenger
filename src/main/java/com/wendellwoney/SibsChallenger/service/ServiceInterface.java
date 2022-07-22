@@ -1,6 +1,7 @@
 package com.wendellwoney.SibsChallenger.service;
 
 import com.wendellwoney.SibsChallenger.dto.ItemDto;
+import com.wendellwoney.SibsChallenger.dto.ItemPostDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseListDto;
 
@@ -8,8 +9,8 @@ import java.util.List;
 
 public interface ServiceInterface {
     ResponseListDto getAll();
-    ResponseDto get();
-    ResponseDto create(ItemDto item);
+    ResponseDto get(Long id);
+    ResponseDto create(ItemPostDto item);
     ResponseDto update(ItemDto item);
-    Boolean delete(Long item);
+    ResponseDto delete(Long item);
 }

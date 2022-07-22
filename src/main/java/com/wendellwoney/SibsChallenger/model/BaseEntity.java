@@ -16,8 +16,6 @@ import java.util.Objects;
 
 @Data
 @MappedSuperclass
-@Where(clause = "deleted = false")
-@SQLDelete(sql = "UPDATE #{#entityName} SET deleted = true WHERE id = ?")
 public abstract class BaseEntity implements Serializable {
 
     @Id
