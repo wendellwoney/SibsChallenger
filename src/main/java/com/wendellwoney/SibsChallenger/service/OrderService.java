@@ -131,12 +131,11 @@ public class OrderService implements OrderServiceInterface{
     }
 
     @Transactional
-    public Order updateOrder(Order order) throws CloneNotSupportedException {
+    public Order updateOrder(Order order) {
         List<OrderItem> orderList = new ArrayList<>();
         if ( order.getOrderItens() != null) {
             orderList = order.getOrderItens();
         }
-
         order.setOrderItens(null);
         Order persist = repository.save(order);
 
