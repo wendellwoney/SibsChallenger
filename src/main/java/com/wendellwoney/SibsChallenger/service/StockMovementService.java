@@ -1,10 +1,8 @@
 package com.wendellwoney.SibsChallenger.service;
 
 import com.wendellwoney.SibsChallenger.Utils;
-import com.wendellwoney.SibsChallenger.configuration.mapper.ItemMapper;
-import com.wendellwoney.SibsChallenger.configuration.mapper.StockMovementMapper;
+import com.wendellwoney.SibsChallenger.configuration.mapper.Mapper;
 import com.wendellwoney.SibsChallenger.dto.*;
-import com.wendellwoney.SibsChallenger.model.Item;
 import com.wendellwoney.SibsChallenger.model.StockMovement;
 import com.wendellwoney.SibsChallenger.repository.StockMovementRepository;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +30,7 @@ public class StockMovementService implements StockMovementServiceInterface {
             List<StockMovementDto> stockMovementsDto = new ArrayList<>();
 
             if (stockMovements.size() > 0) {
-                stockMovementsDto = stockMovements.stream().map(entity -> StockMovementMapper.Mapper().map(entity, StockMovementDto.class)).collect(Collectors.toList());
+                stockMovementsDto = stockMovements.stream().map(entity -> Mapper.config().map(entity, StockMovementDto.class)).collect(Collectors.toList());
             }
 
             return  new ResponseListDto(false, stockMovementsDto);
@@ -49,7 +47,7 @@ public class StockMovementService implements StockMovementServiceInterface {
             if (stockMovement == null) {
                 return new ResponseDto(true, "Stock moviment not found!");
             }
-            return new ResponseDto(false, StockMovementMapper.Mapper().map(stockMovement, StockMovementDto.class));
+            return new ResponseDto(false, Mapper.config().map(stockMovement, StockMovementDto.class));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseDto(true, "Error to get Stock moviment!");
@@ -59,7 +57,7 @@ public class StockMovementService implements StockMovementServiceInterface {
     @Override
     public ResponseDto create(StockMovementPostDto stockMovementPostDto) {
         try {
-            StockMovement stockMovement = StockMovementMapper.Mapper().map(stockMovementPostDto, StockMovement.class);
+            StockMovement stockMovement = Mapper.config().map(stockMovementPostDto, StockMovement.class);
             stockMovement.setId(null);
             if(stockMovement == null) {
                 logger.error("Error to create new stock moviment [map return null]");
@@ -82,7 +80,7 @@ public class StockMovementService implements StockMovementServiceInterface {
                 throw new Exception("Item id not found for update item");
             }
 
-            StockMovement stockMovement = StockMovementMapper.Mapper().map(stockMovementDto, StockMovement.class);
+            StockMovement stockMovement = Mapper.config().map(stockMovementDto, StockMovement.class);
 
             if(stockMovement == null) {
                 logger.error("Error to update stock Moviment [map return null]");
@@ -92,7 +90,7 @@ public class StockMovementService implements StockMovementServiceInterface {
             Utils.comparAndIgnoreNull(stockMovement, check);
 
             StockMovement persist = repository.save(check);
-            return new ResponseDto(false, ItemMapper.Mapper().map(persist, StockMovementDto.class) );
+            return new ResponseDto(false, Mapper.config().map(persist, StockMovementDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseDto(true, "Error update stock moviment!");

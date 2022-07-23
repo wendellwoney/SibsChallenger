@@ -1,16 +1,13 @@
 package com.wendellwoney.SibsChallenger.service;
 
 import com.wendellwoney.SibsChallenger.Utils;
-import com.wendellwoney.SibsChallenger.configuration.mapper.ItemMapper;
+import com.wendellwoney.SibsChallenger.configuration.mapper.Mapper;
 import com.wendellwoney.SibsChallenger.dto.ItemDto;
 import com.wendellwoney.SibsChallenger.dto.ItemPostDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseListDto;
 import com.wendellwoney.SibsChallenger.model.Item;
 import com.wendellwoney.SibsChallenger.repository.ItemRepository;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -37,7 +34,7 @@ public class ItemService implements ItemServiceInterface{
             List<ItemDto> itensDto = new ArrayList<>();
 
             if (itens.size() > 0) {
-               itensDto = itens.stream().map(entity -> ItemMapper.Mapper().map(entity, ItemDto.class)).collect(Collectors.toList());
+               itensDto = itens.stream().map(entity -> Mapper.config().map(entity, ItemDto.class)).collect(Collectors.toList());
             }
 
             return  new ResponseListDto(false, itensDto);
@@ -54,7 +51,7 @@ public class ItemService implements ItemServiceInterface{
             if (item == null) {
                 return new ResponseDto(true, "Item not found!");
             }
-            return new ResponseDto(false, ItemMapper.Mapper().map(item, ItemDto.class));
+            return new ResponseDto(false, Mapper.config().map(item, ItemDto.class));
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseDto(true, "Error to get item!");
@@ -64,13 +61,13 @@ public class ItemService implements ItemServiceInterface{
     @Override
     public ResponseDto create(ItemPostDto itemDto) {
         try {
-            Item item = ItemMapper.Mapper().map(itemDto, Item.class);
+            Item item = Mapper.config().map(itemDto, Item.class);
             if(item == null) {
                 logger.error("Error to create new item [map return null]");
                 return new ResponseDto(true, "Error to create new item!");
             }
             Item persist = repository.save(item);
-            return new ResponseDto(false, ItemMapper.Mapper().map(persist, ItemDto.class) );
+            return new ResponseDto(false, Mapper.config().map(persist, ItemDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseDto(true, "Error to create item!");
@@ -86,7 +83,7 @@ public class ItemService implements ItemServiceInterface{
                 throw new Exception("Item id not found for update item");
             }
 
-            Item item = ItemMapper.Mapper().map(itemDto, Item.class);
+            Item item = Mapper.config().map(itemDto, Item.class);
 
             if(item == null) {
                 logger.error("Error to update item [map return null]");
@@ -96,7 +93,7 @@ public class ItemService implements ItemServiceInterface{
             Utils.comparAndIgnoreNull(item, check);
 
             Item persist = repository.save(check);
-            return new ResponseDto(false, ItemMapper.Mapper().map(persist, ItemDto.class) );
+            return new ResponseDto(false, Mapper.config().map(persist, ItemDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseDto(true, "Error to update item!");

@@ -1,6 +1,6 @@
 package com.wendellwoney.SibsChallenger.controller;
 
-import com.wendellwoney.SibsChallenger.configuration.mapper.StockMovementMapper;
+import com.wendellwoney.SibsChallenger.configuration.mapper.Mapper;
 import com.wendellwoney.SibsChallenger.dto.*;
 import com.wendellwoney.SibsChallenger.service.StockMovementServiceInterface;
 import io.swagger.annotations.Api;
@@ -61,7 +61,7 @@ public class StockMovementController implements StockmovementControllerInterface
     @ApiOperation(value = "This method update stock moviment")
     @PatchMapping(value = "/stock-moviment/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> update(@PathVariable(value = "id") Long id, @RequestBody StockMovementPostDto stockMovementPostDto) {
-        StockMovementDto stockMovementDto = StockMovementMapper.Mapper().map(stockMovementPostDto, StockMovementDto.class);
+        StockMovementDto stockMovementDto = Mapper.config().map(stockMovementPostDto, StockMovementDto.class);
         stockMovementDto.setId(id);
         ResponseDto stock = stockMovimentService.update(stockMovementDto);
         if (stock.getHasError()) {

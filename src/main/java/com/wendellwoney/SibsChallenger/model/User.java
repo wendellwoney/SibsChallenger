@@ -1,6 +1,5 @@
 package com.wendellwoney.SibsChallenger.model;
 
-import com.wendellwoney.SibsChallenger.configuration.mapper.StockMovementMapper;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

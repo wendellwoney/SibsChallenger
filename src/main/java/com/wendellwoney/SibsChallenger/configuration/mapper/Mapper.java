@@ -1,5 +1,5 @@
 package com.wendellwoney.SibsChallenger.configuration.mapper;
 
-public class StockMovementMapper extends MapperConfig {
+public class Mapper extends MapperConfig {
 
 }
