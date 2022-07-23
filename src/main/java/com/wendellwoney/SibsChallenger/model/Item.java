@@ -4,10 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -28,6 +26,9 @@ public class Item extends BaseEntity {
     @Lob
     @Column(nullable = false)
     private String description;
+
+    @OneToMany(mappedBy = "item")
+    private List<StockMovement> stockMoviments;
 
     @Override
     public boolean equals(Object o) {

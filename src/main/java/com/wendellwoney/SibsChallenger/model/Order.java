@@ -1,10 +1,12 @@
 package com.wendellwoney.SibsChallenger.model;
 
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 
 @Data
@@ -14,16 +16,18 @@ import java.util.List;
 @Table(name = "orders")
 @SQLDelete(sql = "UPDATE orders SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Order extends BaseEntity {
+public class Order extends BaseEntity implements Cloneable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<OrderItem> orderItens;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<OrderTracer> orderTracers;
 
     private Boolean completed = false;
@@ -48,5 +52,15 @@ public class Order extends BaseEntity {
         result = 31 * result + (orderTracers != null ? orderTracers.hashCode() : 0);
         result = 31 * result + (completed != null ? completed.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Order clone() {
+        try {
+            Order clone = (Order) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
