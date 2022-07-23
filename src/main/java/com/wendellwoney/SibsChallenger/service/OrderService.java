@@ -140,9 +140,7 @@ public class OrderService implements OrderServiceInterface{
         Order persist = repository.save(order);
 
         if (orderList.size() > 0) {
-            orderList.forEach(orderItem -> {
-                orderItem.setOrder(persist);
-            });
+            orderList.forEach(orderItem -> orderItem.setOrder(persist));
 
             List<OrderItem> listPersist = orderItemService.createUpdateByList(orderList);
             persist.setOrderItens(listPersist);
