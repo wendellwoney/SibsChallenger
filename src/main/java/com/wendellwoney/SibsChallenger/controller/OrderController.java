@@ -60,8 +60,8 @@ public class OrderController implements OrderControllerInterface {
     @Override
     @ApiOperation(value = "This method update order")
     @PatchMapping(value = "/order/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDto> update(@PathVariable(value = "id") Long id, @RequestBody OrderPostDto orderPostDto) {
-        OrderDto orderDto = Mapper.config().map(orderPostDto, OrderDto.class);
+    public ResponseEntity<ResponseDto> update(@PathVariable(value = "id") Long id, @Valid @RequestBody OrderUpdateDto orderUpdateDto) {
+        OrderDto orderDto = Mapper.config().map(orderUpdateDto, OrderDto.class);
         orderDto.setId(id);
         ResponseDto item = orderService.update(orderDto);
         if (item.getHasError()) {

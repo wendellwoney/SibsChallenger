@@ -1,11 +1,13 @@
 package com.wendellwoney.SibsChallenger.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StockMovementPostDto implements Serializable {
     Long itemID;

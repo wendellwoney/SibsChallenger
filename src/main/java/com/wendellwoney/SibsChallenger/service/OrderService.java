@@ -8,13 +8,10 @@ import com.wendellwoney.SibsChallenger.model.OrderItem;
 import com.wendellwoney.SibsChallenger.repository.OrderRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.SerializationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +76,7 @@ public class OrderService implements OrderServiceInterface{
     }
 
     @Transactional
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order) throws CloneNotSupportedException {
         Order clone = order.clone();
         clone.setOrderItens(null);
         Order persist = repository.save(clone);
@@ -88,7 +85,7 @@ public class OrderService implements OrderServiceInterface{
             orderItem.setOrder(persist);
             orderItem.setId(null);
         });
-        List<OrderItem> listPersist = orderItemService.createByList(order.getOrderItens());
+        List<OrderItem> listPersist = orderItemService.createUpdateByList(order.getOrderItens());
         persist.setOrderItens(listPersist);
 
         return persist;
@@ -97,14 +94,27 @@ public class OrderService implements OrderServiceInterface{
     @Override
     public ResponseDto update(OrderDto orderDto) {
         try {
+            if (orderDto.getOrderItens() != null && orderDto.getOrderItens().size() > 0) {
+                orderDto.getOrderItens().forEach(orderItemDto -> {
+                    if (orderItemDto.getId() == null) {
+                        logger.error("Order Item id can't null");
+                        try {
+                            throw new Exception("Order Item id can't null");
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+            }
+
             Order check = repository.findById(orderDto.getId()).orElse(null);
 
             if (check == null) {
+                logger.error("Order id not found for update item");
                 throw new Exception("Order id not found for update item");
             }
 
             Order order = Mapper.config().map(orderDto, Order.class);
-
             if(order == null) {
                 logger.error("Error to update order [map return null]");
                 return new ResponseDto(true, "Error to update order!");
@@ -112,12 +122,34 @@ public class OrderService implements OrderServiceInterface{
 
             Utils.comparAndIgnoreNull(order, check);
 
-            Order persist = repository.save(check);
+            Order persist = this.updateOrder(check);
             return new ResponseDto(false, Mapper.config().map(persist, OrderDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());
             return new ResponseDto(true, "Error to update order!");
         }
+    }
+
+    @Transactional
+    public Order updateOrder(Order order) throws CloneNotSupportedException {
+        List<OrderItem> orderList = new ArrayList<>();
+        if ( order.getOrderItens() != null) {
+            orderList = order.getOrderItens();
+        }
+
+        order.setOrderItens(null);
+        Order persist = repository.save(order);
+
+        if (orderList.size() > 0) {
+            orderList.forEach(orderItem -> {
+                orderItem.setOrder(persist);
+            });
+
+            List<OrderItem> listPersist = orderItemService.createUpdateByList(orderList);
+            persist.setOrderItens(listPersist);
+        }
+
+        return persist;
     }
 
     @Override

@@ -1,10 +1,12 @@
 package com.wendellwoney.SibsChallenger.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class OrderPostDto {
     Long userID;
     List<OrderItemPostDto> itens;

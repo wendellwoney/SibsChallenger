@@ -14,7 +14,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 

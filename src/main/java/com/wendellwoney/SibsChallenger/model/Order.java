@@ -9,7 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -22,11 +23,11 @@ public class Order extends BaseEntity implements Cloneable {
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<OrderItem> orderItens;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<OrderTracer> orderTracers;
 
@@ -54,13 +55,8 @@ public class Order extends BaseEntity implements Cloneable {
         return result;
     }
 
-    @Override
-    public Order clone() {
-        try {
-            Order clone = (Order) super.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public Order clone() throws CloneNotSupportedException
+    {
+        return (Order) super.clone();
     }
 }

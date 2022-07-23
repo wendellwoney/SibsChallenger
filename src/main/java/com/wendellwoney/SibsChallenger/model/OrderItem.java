@@ -6,7 +6,8 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
