@@ -49,7 +49,7 @@ public class ItemController implements ItemControllerInterface {
     }
 
     @Override
-    @ApiOperation(value = "This method create a new item.")
+    @ApiOperation(value = "This method create new item.")
     @PostMapping(value = "item",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> create(@Valid @RequestBody ItemPostDto itemDto) {
         ResponseDto item = itemService.create(itemDto);
@@ -62,8 +62,8 @@ public class ItemController implements ItemControllerInterface {
 
     @Override
     @ApiOperation(value = "This method update item")
-    @PutMapping(value = "item/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDto> update(@PathVariable(value = "id") Long id, @Valid @RequestBody ItemPostDto itemPostDto) {
+    @PatchMapping(value = "item/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDto> update(@PathVariable(value = "id") Long id, @RequestBody ItemPostDto itemPostDto) {
         ItemDto itemDto = ItemMapper.Mapper().map(itemPostDto, ItemDto.class);
         itemDto.setId(id);
         ResponseDto item = itemService.update(itemDto);

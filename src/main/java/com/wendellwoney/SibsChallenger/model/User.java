@@ -2,6 +2,8 @@ package com.wendellwoney.SibsChallenger.model;
 
 import com.wendellwoney.SibsChallenger.configuration.mapper.StockMovementMapper;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class User extends BaseEntity {
 
     @Column(nullable = false)

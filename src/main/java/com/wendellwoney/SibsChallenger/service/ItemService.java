@@ -1,5 +1,6 @@
 package com.wendellwoney.SibsChallenger.service;
 
+import com.wendellwoney.SibsChallenger.Utils;
 import com.wendellwoney.SibsChallenger.configuration.mapper.ItemMapper;
 import com.wendellwoney.SibsChallenger.dto.ItemDto;
 import com.wendellwoney.SibsChallenger.dto.ItemPostDto;
@@ -7,6 +8,9 @@ import com.wendellwoney.SibsChallenger.dto.ResponseDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseListDto;
 import com.wendellwoney.SibsChallenger.model.Item;
 import com.wendellwoney.SibsChallenger.repository.ItemRepository;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -76,12 +80,22 @@ public class ItemService implements ItemServiceInterface{
     @Override
     public ResponseDto update(ItemDto itemDto) {
         try {
+            Item check = repository.findById(itemDto.getId()).orElse(null);
+
+            if (check == null) {
+                throw new Exception("Item id not found for update item");
+            }
+
             Item item = ItemMapper.Mapper().map(itemDto, Item.class);
+
             if(item == null) {
                 logger.error("Error to update item [map return null]");
                 return new ResponseDto(true, "Error to update item!");
             }
-            Item persist = repository.save(item);
+
+            Utils.comparAndIgnoreNull(item, check);
+
+            Item persist = repository.save(check);
             return new ResponseDto(false, ItemMapper.Mapper().map(persist, ItemDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());

@@ -1,11 +1,12 @@
 package com.wendellwoney.SibsChallenger.dto;
 
-import com.wendellwoney.SibsChallenger.model.Item;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseListDto {
     private Boolean hasError;
     private List<?> response;

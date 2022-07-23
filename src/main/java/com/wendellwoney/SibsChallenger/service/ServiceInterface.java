@@ -10,7 +10,5 @@ import java.util.List;
 public interface ServiceInterface {
     ResponseListDto getAll();
     ResponseDto get(Long id);
-    ResponseDto create(ItemPostDto item);
-    ResponseDto update(ItemDto item);
-    ResponseDto delete(Long item);
+    ResponseDto delete(Long id);
 }

@@ -19,11 +19,11 @@ import java.util.Objects;
 public abstract class BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, columnDefinition = "serial")
     private Long id;
 
     @JsonIgnore
-    @Column(nullable = false)
     private Boolean deleted = false;
 
     @Column(updatable = false)

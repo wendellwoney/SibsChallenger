@@ -11,7 +11,5 @@ import java.util.List;
 public interface ControllerInterface {
     ResponseEntity<ResponseListDto> getAll();
     ResponseEntity<ResponseDto> get(Long id);
-    ResponseEntity<ResponseDto> create(ItemPostDto item);
-    ResponseEntity<ResponseDto> update(Long id, ItemPostDto item);
     ResponseEntity<ResponseDto> delete(Long id);
 }
