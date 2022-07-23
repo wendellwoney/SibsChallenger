@@ -1,7 +1,5 @@
 package com.wendellwoney.SibsChallenger.service;
 
-import com.wendellwoney.SibsChallenger.dto.ItemDto;
-import com.wendellwoney.SibsChallenger.dto.ItemPostDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseDto;
 import com.wendellwoney.SibsChallenger.dto.ResponseListDto;
 

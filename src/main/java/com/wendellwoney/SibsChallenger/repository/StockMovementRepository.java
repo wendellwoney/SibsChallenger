@@ -1,6 +1,5 @@
 package com.wendellwoney.SibsChallenger.repository;
 
-import com.wendellwoney.SibsChallenger.model.Item;
 import com.wendellwoney.SibsChallenger.model.StockMovement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
