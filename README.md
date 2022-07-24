@@ -112,6 +112,7 @@ Access the path with the project running: ``http://localhost:8282/swagger-ui/ind
 
 ### Insominia
 To access the collection of endpoints through insomnia, just click on the link below and import
+
 [Insomnia_2022-07-24.zip](https://github.com/wendellwoney/SibsChallenger/files/9176480/Insomnia_2022-07-24.zip)
 ![image](https://user-images.githubusercontent.com/29403648/180661937-48fb455c-e33b-4586-826c-d8fa7156813b.png)
 
