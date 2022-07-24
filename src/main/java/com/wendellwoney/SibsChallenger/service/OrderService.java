@@ -31,9 +31,6 @@ public class OrderService implements OrderServiceInterface{
     @Autowired
     private OrderItemServiceInterface orderItemService;
 
-    @Autowired
-    private ProcessOrderServiceInterface processOrderService;
-
     private static final Logger logger = LogManager.getLogger(OrderService.class);
 
     @Override
@@ -76,11 +73,6 @@ public class OrderService implements OrderServiceInterface{
                 return new ResponseDto(true, "Error to create new order!");
             }
             Order persist = this.createOrder(order);
-            try {
-                processOrderService.process();
-            } catch (Exception e) {
-                logger.error("[ORDER SERVICE] " + e.getMessage());
-            }
             return new ResponseDto(false, Mapper.config().map(persist, OrderDto.class) );
         } catch (Exception e) {
             logger.error("[ORDER SERVICE] " + e.getMessage());
@@ -91,6 +83,7 @@ public class OrderService implements OrderServiceInterface{
     @Transactional
     public Order createOrder(Order order) throws CloneNotSupportedException {
         Order clone = order.clone();
+        clone.setId(null);
         clone.setStatus(OrderStatusEnum.INPROGESS);
         clone.setOrderItens(null);
         Order persist = repository.save(clone);
@@ -137,11 +130,6 @@ public class OrderService implements OrderServiceInterface{
             Utils.comparAndIgnoreNull(order, check);
 
             Order persist = this.updateOrder(check);
-            try {
-                processOrderService.process();
-            } catch (Exception e) {
-                logger.error("[ORDER SERVICE] " + e.getMessage());
-            }
             return new ResponseDto(false, Mapper.config().map(persist, OrderDto.class) );
         } catch (Exception e) {
             logger.error("[ORDER SERVICE] " + e.getMessage());

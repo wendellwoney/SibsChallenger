@@ -2,10 +2,13 @@ package com.wendellwoney.SibsChallenger.controller;
 
 import com.wendellwoney.SibsChallenger.configuration.mapper.Mapper;
 import com.wendellwoney.SibsChallenger.dto.*;
+import com.wendellwoney.SibsChallenger.service.ProcessOrderServiceInterface;
 import com.wendellwoney.SibsChallenger.service.StockMovementServiceInterface;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,10 @@ public class StockMovementController implements StockmovementControllerInterface
     @Autowired
     private StockMovementServiceInterface stockMovimentService;
 
+    @Autowired
+    private ProcessOrderServiceInterface processOrderService;
+
+    private static final Logger logger = LogManager.getLogger(OrderController.class);
     @Override
     @ApiOperation(value = "This method return all stock moviments.")
     @GetMapping(value = "/stock-moviments", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,6 +61,12 @@ public class StockMovementController implements StockmovementControllerInterface
             return ResponseEntity.badRequest().body(item);
         }
 
+        try {
+            processOrderService.process();
+        } catch (Exception e) {
+            logger.error("[ORDER SERVICE] " + e.getMessage());
+        }
+
         return ResponseEntity.ok(item);
     }
 
@@ -68,6 +81,11 @@ public class StockMovementController implements StockmovementControllerInterface
             return ResponseEntity.badRequest().body(stock);
         }
 
+        try {
+            processOrderService.process();
+        } catch (Exception e) {
+            logger.error("[ORDER SERVICE] " + e.getMessage());
+        }
         return ResponseEntity.ok(stock);
     }
 

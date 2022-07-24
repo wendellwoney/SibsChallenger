@@ -21,9 +21,6 @@ public class StockMovementService implements StockMovementServiceInterface {
     @Autowired
     private StockMovementRepository repository;
 
-    @Autowired
-    private ProcessOrderServiceInterface processOrderService;
-
     private static final Logger logger = LogManager.getLogger(StockMovementService.class);
 
     @Override
@@ -72,11 +69,6 @@ public class StockMovementService implements StockMovementServiceInterface {
 
             stockMovement.setId(null);
             StockMovement persist = repository.save(stockMovement);
-            try {
-                processOrderService.process();
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
             logger.info("[STOCK MOVIMENT] Create new stock moviment to item " + persist.getItem().getId() +
                     " Quantity " + persist.getQuantity());
             return this.get(persist.getId());
@@ -105,11 +97,6 @@ public class StockMovementService implements StockMovementServiceInterface {
             Utils.comparAndIgnoreNull(stockMovement, check);
 
             StockMovement persist = repository.save(check);
-            try {
-                processOrderService.process();
-            } catch (Exception e) {
-                logger.error("[STOCK MOVIMENT] " + e.getMessage());
-            }
             logger.info("[STOCK MOVIMENT] Update stock moviment " + persist.getId() + " to item " + persist.getItem().getId() +
                     " Quantity " + persist.getQuantity());
             return new ResponseDto(false, Mapper.config().map(persist, StockMovementDto.class) );
@@ -123,7 +110,7 @@ public class StockMovementService implements StockMovementServiceInterface {
     public ResponseDto delete(Long id) {
         try {
             repository.deleteById(id);
-            logger.info("[STOCK MOVIMENT] Deleted stock moviment " + id);
+            logger.info("[STOCK MOVIMENT] Deleted stock moviment id " + id);
             return new ResponseDto(false, "Stock moviment removed!" );
         } catch (Exception e) {
             logger.error("[STOCK MOVIMENT] " + e.getMessage());
