@@ -10,12 +10,17 @@ import java.util.List;
 
 @Repository
 public interface StockMovementRepository extends JpaRepository<StockMovement, Long> {
-    @Query(value = "SELECT s.id, s.item, COALESCE((s.quantity - SUM(t.quantityUsed)), s.quantity) as quantity FROM " +
+    @Query(value = "SELECT s.id, s.item.id, COALESCE((s.quantity - SUM(t.quantityUsed)), s.quantity) as quantity FROM " +
             "StockMovement s LEFT JOIN OrderTracer t on (s.id = t.stockMovement.id) WHERE s.item.id IN ?1 " +
-            "GROUP BY s.id ORDER BY s.item.id, s.id")
+            "GROUP BY s.id,s.item.id ORDER BY s.item.id, s.id")
     List<Stock> getStockByProducts(List<Long> productsId);
-    @Query(value = "SELECT s.id, s.item, COALESCE((s.quantity - SUM(t.quantityUsed)), s.quantity) as quantity FROM " +
+    @Query(value = "SELECT s.id, s.item.id, COALESCE((s.quantity - SUM(t.quantityUsed)), s.quantity) as quantity FROM " +
             "StockMovement s LEFT JOIN OrderTracer t on (s.id = t.stockMovement.id) WHERE s.item.id = ?1 " +
-            "GROUP BY s.id ORDER BY s.item.id, s.id")
+            "GROUP BY s.id, s.item.id ORDER BY s.item.id, s.id")
     List<Stock> getStockByProduct(Long product);
+
+    @Query(value = "SELECT s.id, s.item.id, COALESCE((s.quantity - SUM(t.quantityUsed)), s.quantity) as quantity FROM " +
+            "StockMovement s LEFT JOIN OrderTracer t on (s.id = t.stockMovement.id) " +
+            "GROUP BY s.id, s.item.id ORDER BY s.item.id, s.id")
+    List<Object[]> getStockProduct();
 }

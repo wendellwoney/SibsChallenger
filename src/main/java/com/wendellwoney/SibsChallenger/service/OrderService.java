@@ -26,6 +26,9 @@ public class OrderService implements OrderServiceInterface{
     @Autowired
     private OrderItemServiceInterface orderItemService;
 
+    @Autowired
+    private ProcessOrderServiceInterface processOrderService;
+
     private static final Logger logger = LogManager.getLogger(OrderService.class);
 
     @Override
@@ -68,6 +71,7 @@ public class OrderService implements OrderServiceInterface{
                 return new ResponseDto(true, "Error to create new order!");
             }
             Order persist = this.createOrder(order);
+            processOrderService.process();
             return new ResponseDto(false, Mapper.config().map(persist, OrderDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -123,6 +127,7 @@ public class OrderService implements OrderServiceInterface{
             Utils.comparAndIgnoreNull(order, check);
 
             Order persist = this.updateOrder(check);
+            processOrderService.process();
             return new ResponseDto(false, Mapper.config().map(persist, OrderDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());

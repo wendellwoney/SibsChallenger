@@ -21,6 +21,9 @@ public class StockMovementService implements StockMovementServiceInterface {
     @Autowired
     private StockMovementRepository repository;
 
+    @Autowired
+    private ProcessOrderServiceInterface processOrderService;
+
     private static final Logger logger = LogManager.getLogger(StockMovementService.class);
 
     @Override
@@ -54,16 +57,22 @@ public class StockMovementService implements StockMovementServiceInterface {
         }
     }
 
+    public StockMovement getId (Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
     @Override
     public ResponseDto create(StockMovementPostDto stockMovementPostDto) {
         try {
             StockMovement stockMovement = Mapper.config().map(stockMovementPostDto, StockMovement.class);
-            stockMovement.setId(null);
             if(stockMovement == null) {
                 logger.error("Error to create new stock moviment [map return null]");
                 return new ResponseDto(true, "Error to create new stock moviment!");
             }
+
+            stockMovement.setId(null);
             StockMovement persist = repository.save(stockMovement);
+            processOrderService.process();
             return this.get(persist.getId());
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -90,6 +99,7 @@ public class StockMovementService implements StockMovementServiceInterface {
             Utils.comparAndIgnoreNull(stockMovement, check);
 
             StockMovement persist = repository.save(check);
+            processOrderService.process();
             return new ResponseDto(false, Mapper.config().map(persist, StockMovementDto.class) );
         } catch (Exception e) {
             logger.error(e.getMessage());

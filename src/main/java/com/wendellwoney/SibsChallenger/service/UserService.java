@@ -3,6 +3,7 @@ package com.wendellwoney.SibsChallenger.service;
 import com.wendellwoney.SibsChallenger.Utils;
 import com.wendellwoney.SibsChallenger.configuration.mapper.Mapper;
 import com.wendellwoney.SibsChallenger.dto.*;
+import com.wendellwoney.SibsChallenger.model.StockMovement;
 import com.wendellwoney.SibsChallenger.model.User;
 import com.wendellwoney.SibsChallenger.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
