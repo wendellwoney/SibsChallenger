@@ -16,7 +16,5 @@ services:
       - 8282:8282
     depends_on:
       - dbpostgresql
-    volumes:
-      - ./log:
     environment:
       - SERVER_PORT=8282
