@@ -58,7 +58,7 @@ su - ${USER}
 
 ### Configuring properties
 
-Rename ``applicationDEV.properties`` to ``application.properties`
+Rename ``applicationDEV.properties`` to ``application.properties``
 
 ```
 #data source
