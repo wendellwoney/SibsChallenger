@@ -1,7 +1,4 @@
-dockker-compose down
-
+docker-compose down
+docker-compose build
 mvn clean package -DskipTests
-
-dockker-compose build
-
 docker-compose up
