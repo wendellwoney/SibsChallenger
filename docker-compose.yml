@@ -8,17 +8,15 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
       - POSTGRES_DB=mydb
-#  app:
-#    container_name: app-springboot-postgresql
-#    image: app-springboot-postgresql
-#    build: ./
-#    ports:
-#      - 8282:8282
-#    depends_on:
-#      - dbpostgresql
-#    environment:
-#      - SERVER_PORT=8282
-#      - SPRING_DATABASE_DRIVERCLASSNAME=org.postgresql.Driver
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.1.9:5430/mydb
-#      - SPRING_DATASOURCE_USERNAME=postgres
-#      - SPRING_DATASOURCE_PASSWORD=12345
+  app:
+    container_name: app-springboot
+    image: app-springboot-postgresql
+    build: ./
+    ports:
+      - 8282:8282
+    depends_on:
+      - dbpostgresql
+    volumes:
+      - ./log:
+    environment:
+      - SERVER_PORT=8282
