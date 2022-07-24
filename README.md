@@ -106,3 +106,51 @@ dockker-compose build
 
 docker-compose up
 ```
+Will create a container with postgres database named mydb and application access url ``http://localhost:8282/stock``
+
+### Swagger
+Access the path with the project running: ``http://localhost:8282/swagger-ui/index.html#/``
+
+![image](https://user-images.githubusercontent.com/29403648/180661774-7bdcb0a5-c34e-4380-bae6-efbe2b3b5f20.png)
+
+### Insominia
+To access the collection of endpoints through insomnia, just click on the link below and import
+[Insomnia_2022-07-24.zip](https://github.com/wendellwoney/SibsChallenger/files/9176480/Insomnia_2022-07-24.zip)
+![image](https://user-images.githubusercontent.com/29403648/180661937-48fb455c-e33b-4586-826c-d8fa7156813b.png)
+
+To install on ubuntu
+```shell
+sudo snap install insomnia
+```
+
+### Log Files
+The log files are divided as follows
+```
+stock-debug.log   #Aplication Debug
+stock-error.log   #Orders completed, stock movements, email sent, applications info
+stock-warning.log #Application warning
+stock-error.log   #Application warning
+```
+
+### Access log files
+
+To access the log files it is necessary to access the ``app-springboot docker`` container using the following command
+```shell
+docker exec -it app-springboot /bin/sh
+
+/ #
+cd logs
+ls
+stock-debug.log    stock-error.log    stock-info.log     stock-warning.log
+```
+
+To view the contents of the file
+```shell
+cat stock-info.log
+
+2022-07-24 18:03:07 INFO - Starting SibsChallengerApplication v1 using Java 1.8.0_212 on 0559dc4863fd with PID 1 (/sibs.jar started by root in /)
+2022-07-24 18:03:07 INFO - No active profile set, falling back to 1 default profile: "default"
+2022-07-24 18:03:11 INFO - Started SibsChallengerApplication in 4.309 seconds (JVM running for 4.941)
+
+```
+
