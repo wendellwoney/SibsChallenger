@@ -35,23 +35,4 @@ public class OrderTracer extends BaseEntity{
     @Column(name="quantity_used",nullable = false)
     private Double quantityUsed;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderTracer that = (OrderTracer) o;
-
-        if (!order.equals(that.order)) return false;
-        if (!stockMovement.equals(that.stockMovement)) return false;
-        return quantityUsed.equals(that.quantityUsed);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = order.hashCode();
-        result = 31 * result + stockMovement.hashCode();
-        result = 31 * result + quantityUsed.hashCode();
-        return result;
-    }
 }

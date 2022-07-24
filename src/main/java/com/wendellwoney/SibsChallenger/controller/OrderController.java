@@ -3,6 +3,7 @@ package com.wendellwoney.SibsChallenger.controller;
 import com.wendellwoney.SibsChallenger.configuration.mapper.Mapper;
 import com.wendellwoney.SibsChallenger.dto.*;
 import com.wendellwoney.SibsChallenger.service.OrderServiceInterface;
+import com.wendellwoney.SibsChallenger.service.ProcessOrderServiceInterface;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +22,9 @@ public class OrderController implements OrderControllerInterface {
 
     @Autowired
     private OrderServiceInterface orderService;
+
+    @Autowired
+    private ProcessOrderServiceInterface orderProcessService;
 
     @Override
     @ApiOperation(value = "This method return all orders.")
@@ -58,6 +62,19 @@ public class OrderController implements OrderControllerInterface {
     }
 
     @Override
+    @ApiOperation(value = "This method cancel order not completed.")
+    @PostMapping(value = "/order/{id}/cancel",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDto> cancel(@PathVariable(value = "id") Long id, @Valid @RequestBody OrderCancelDto orderCancelDto) {
+        orderCancelDto.setOrderID(id);
+        ResponseDto item = orderService.cancel(orderCancelDto);
+        if (item.getHasError()) {
+            return ResponseEntity.badRequest().body(item);
+        }
+
+        return ResponseEntity.ok(item);
+    }
+
+    @Override
     @ApiOperation(value = "This method update order")
     @PatchMapping(value = "/order/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> update(@PathVariable(value = "id") Long id, @Valid @RequestBody OrderUpdateDto orderUpdateDto) {
@@ -80,5 +97,17 @@ public class OrderController implements OrderControllerInterface {
             return ResponseEntity.badRequest().body(order);
         }
         return ResponseEntity.ok(order);
+    }
+
+    @Override
+    @ApiOperation(value = "This method return process all orders.")
+    @GetMapping(value = "/orders/process", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDto> process() {
+        try {
+            orderProcessService.process();
+            return ResponseEntity.ok(new ResponseDto(false, "Process order complet"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseDto(true, "Error to Process orders"));
+        }
     }
 }

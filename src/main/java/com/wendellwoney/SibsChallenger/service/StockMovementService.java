@@ -38,7 +38,7 @@ public class StockMovementService implements StockMovementServiceInterface {
 
             return  new ResponseListDto(false, stockMovementsDto);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[STOCK MOVIMENT] " + e.getMessage());
             return null;
         }
     }
@@ -52,7 +52,7 @@ public class StockMovementService implements StockMovementServiceInterface {
             }
             return new ResponseDto(false, Mapper.config().map(stockMovement, StockMovementDto.class));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[STOCK MOVIMENT] " + e.getMessage());
             return new ResponseDto(true, "Error to get Stock moviment!");
         }
     }
@@ -66,16 +66,22 @@ public class StockMovementService implements StockMovementServiceInterface {
         try {
             StockMovement stockMovement = Mapper.config().map(stockMovementPostDto, StockMovement.class);
             if(stockMovement == null) {
-                logger.error("Error to create new stock moviment [map return null]");
+                logger.error("[STOCK MOVIMENT] Error to create new stock moviment [map return null]");
                 return new ResponseDto(true, "Error to create new stock moviment!");
             }
 
             stockMovement.setId(null);
             StockMovement persist = repository.save(stockMovement);
-            processOrderService.process();
+            try {
+                processOrderService.process();
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            logger.info("[STOCK MOVIMENT] Create new stock moviment to item " + persist.getItem().getId() +
+                    " Quantity " + persist.getQuantity());
             return this.get(persist.getId());
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[STOCK MOVIMENT] " + e.getMessage());
             return new ResponseDto(true, "Error to create stock moviment!");
         }
     }
@@ -92,17 +98,23 @@ public class StockMovementService implements StockMovementServiceInterface {
             StockMovement stockMovement = Mapper.config().map(stockMovementDto, StockMovement.class);
 
             if(stockMovement == null) {
-                logger.error("Error to update stock Moviment [map return null]");
+                logger.error("[STOCK MOVIMENT] Error to update stock Moviment [map return null]");
                 return new ResponseDto(true, "Error update stock moviment!");
             }
 
             Utils.comparAndIgnoreNull(stockMovement, check);
 
             StockMovement persist = repository.save(check);
-            processOrderService.process();
+            try {
+                processOrderService.process();
+            } catch (Exception e) {
+                logger.error("[STOCK MOVIMENT] " + e.getMessage());
+            }
+            logger.info("[STOCK MOVIMENT] Update stock moviment " + persist.getId() + " to item " + persist.getItem().getId() +
+                    " Quantity " + persist.getQuantity());
             return new ResponseDto(false, Mapper.config().map(persist, StockMovementDto.class) );
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[STOCK MOVIMENT] " + e.getMessage());
             return new ResponseDto(true, "Error update stock moviment!");
         }
     }
@@ -111,9 +123,10 @@ public class StockMovementService implements StockMovementServiceInterface {
     public ResponseDto delete(Long id) {
         try {
             repository.deleteById(id);
+            logger.info("[STOCK MOVIMENT] Deleted stock moviment " + id);
             return new ResponseDto(false, "Stock moviment removed!" );
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[STOCK MOVIMENT] " + e.getMessage());
             return new ResponseDto(true, "Error remove Stock moviment!");
         }
     }

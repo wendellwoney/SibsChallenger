@@ -39,7 +39,7 @@ public class ItemService implements ItemServiceInterface{
 
             return  new ResponseListDto(false, itensDto);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[ITEM SERVICE] " + e.getMessage());
             return null;
         }
     }
@@ -53,7 +53,7 @@ public class ItemService implements ItemServiceInterface{
             }
             return new ResponseDto(false, Mapper.config().map(item, ItemDto.class));
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[ITEM SERVICE] " + e.getMessage());
             return new ResponseDto(true, "Error to get item!");
         }
     }
@@ -63,13 +63,13 @@ public class ItemService implements ItemServiceInterface{
         try {
             Item item = Mapper.config().map(itemDto, Item.class);
             if(item == null) {
-                logger.error("Error to create new item [map return null]");
+                logger.error("[ITEM SERVICE] Error to create new item [map return null]");
                 return new ResponseDto(true, "Error to create new item!");
             }
             Item persist = repository.save(item);
             return new ResponseDto(false, Mapper.config().map(persist, ItemDto.class) );
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[ITEM SERVICE] " + e.getMessage());
             return new ResponseDto(true, "Error to create item!");
         }
     }
@@ -86,7 +86,7 @@ public class ItemService implements ItemServiceInterface{
             Item item = Mapper.config().map(itemDto, Item.class);
 
             if(item == null) {
-                logger.error("Error to update item [map return null]");
+                logger.error("[ITEM SERVICE] Error to update item [map return null]");
                 return new ResponseDto(true, "Error to update item!");
             }
 
@@ -95,7 +95,7 @@ public class ItemService implements ItemServiceInterface{
             Item persist = repository.save(check);
             return new ResponseDto(false, Mapper.config().map(persist, ItemDto.class) );
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[ITEM SERVICE] " + e.getMessage());
             return new ResponseDto(true, "Error to update item!");
         }
     }
@@ -106,7 +106,7 @@ public class ItemService implements ItemServiceInterface{
             repository.deleteById(item);
             return new ResponseDto(false, "Item removed!" );
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("[ITEM SERVICE] " + e.getMessage());
             return new ResponseDto(true, "Error to delete item!");
         }
     }

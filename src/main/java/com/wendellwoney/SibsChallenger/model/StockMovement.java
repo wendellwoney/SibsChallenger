@@ -27,23 +27,4 @@ public class StockMovement extends BaseEntity {
     @OneToMany(mappedBy = "stockMovement")
     private List<OrderTracer> orderTracers;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        StockMovement that = (StockMovement) o;
-
-        if (!item.equals(that.item)) return false;
-        if (!quantity.equals(that.quantity)) return false;
-        return orderTracers != null ? orderTracers.equals(that.orderTracers) : that.orderTracers == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = item.hashCode();
-        result = 31 * result + quantity.hashCode();
-        result = 31 * result + (orderTracers != null ? orderTracers.hashCode() : 0);
-        return result;
-    }
 }
