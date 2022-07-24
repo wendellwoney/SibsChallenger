@@ -98,12 +98,9 @@ spring.mail.properties.mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFact
 Access the project root and run ``./start.sh`` file. The file will start the project build and the docker instance
 
 ```
-dockker-compose down
-
+docker-compose down
+docker-compose build
 mvn clean package -DskipTests
-
-dockker-compose build
-
 docker-compose up
 ```
 Will create a container with postgres database named mydb and application access url ``http://localhost:8282/stock``
