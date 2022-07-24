@@ -83,7 +83,7 @@ server.port=8080
 #Mail
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
-spring.mail.username= #ADD EMAIL SENT TO EMAIL
+spring.mail.username= noreplaysibs@gmail.com
 spring.mail.password= #ADD PASSWORD SENT TO EMAIL
 spring.mail.protocol=smtp
 spring.mail.properties.mail.smtp.auth=true
