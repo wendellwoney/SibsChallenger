@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
-@Api(tags = "Users")
-@Tag(name = "Users", description = "Handle With Itens")
+@Api(tags = "Orders")
+@Tag(name = "Orders", description = "Handle With Orders")
 @RestController
 public class OrderController implements OrderControllerInterface {
 
@@ -76,7 +76,7 @@ public class OrderController implements OrderControllerInterface {
     }
 
     @Override
-    @ApiOperation(value = "This method cancel order not completed.")
+    @ApiOperation(value = "This method cancel any order.")
     @PostMapping(value = "/order/{id}/cancel",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> cancel(@PathVariable(value = "id") Long id, @Valid @RequestBody OrderCancelDto orderCancelDto) {
         orderCancelDto.setOrderID(id);
@@ -120,12 +120,12 @@ public class OrderController implements OrderControllerInterface {
     }
 
     @Override
-    @ApiOperation(value = "This method return process all orders.")
+    @ApiOperation(value = "This method process all orders.")
     @GetMapping(value = "/orders/process", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseDto> process() {
         try {
             orderProcessService.process();
-            return ResponseEntity.ok(new ResponseDto(false, "Process order complet"));
+            return ResponseEntity.ok(new ResponseDto(false, "Process order completed"));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseDto(true, "Error to Process orders"));
         }

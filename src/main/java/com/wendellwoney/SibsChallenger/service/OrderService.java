@@ -116,6 +116,11 @@ public class OrderService implements OrderServiceInterface{
 
             Order check = repository.findById(orderDto.getId()).orElse(null);
 
+            if (check.getStatus() == OrderStatusEnum.COMPLETED) {
+                logger.error("[ORDER SERVICE] Order id " + check.getId() + "is completed");
+                throw new Exception("Order id " + check.getId() + "is completed");
+            }
+
             if (check == null) {
                 logger.error("[ORDER SERVICE] Order id not found for update item");
                 throw new Exception("Order id not found for update item");
